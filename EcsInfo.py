@@ -1,4 +1,4 @@
-#!/usr/bin/python
+# #!/usr/bin/python
 # _*_ coding:utf-8 _*_
 import UserInfo
 import requests
@@ -63,7 +63,7 @@ class EcsClass(object):
         return ecslist
 
 
-#if __name__ == '__main__':
+# if __name__ == '__main__':
 #    projectId_str = 'f5e7454905424cd98204e57b8ef66a3c'
 #    userinfo = UserInfo.UserInfo(domainName="hwx535937", userName="groupE", password="hWX535937@2018",
 #                    projectId=projectId_str)
@@ -74,4 +74,4 @@ class EcsClass(object):
 #    ecsPubHeader = ecsclass.getPubHeaderForToken(projectId=projectId_str, token=token)
 #
 #    servers = ecsclass.getEcsListDetailForNorth(ecsPubHeaderForToken=ecsPubHeader)
-#
+

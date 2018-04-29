@@ -100,7 +100,7 @@ class UserInfo(object):
 	# print(iamReq.json()["user"]["name"])
         #return iamReq.json()["user"]["name"]
 	
-#if __name__ == '__main__':
+# if __name__ == '__main__':
 #    user = UserInfo(domainName="hwx535937", userName="groupE", password="hWX535937@2018",
 #                    projectId="f5e7454905424cd98204e57b8ef66a3c")
 #
@@ -108,4 +108,4 @@ class UserInfo(object):
 #    domainToken = user.getUserTokenByDomainName("hwx535937", "groupE", "hWX535937@2018")
 #    user.selectUserIdForUserName('1ac7ef22de6d4258aa2157c10cf895f5', domainToken)
 #
-#
+
