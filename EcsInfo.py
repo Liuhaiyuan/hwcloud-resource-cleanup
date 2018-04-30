@@ -40,13 +40,12 @@ class EcsClass(object):
     # 根据详细ECS list 获取列表，根据业务逻辑，获取对应字段的值。
 
     def getEcsListData(self):
-        projectId_str = 'f5e7454905424cd98204e57b8ef66a3c'
-        userinfo = UserInfo.UserInfo(domainName="hwx535937", userName="groupE", password="hWX535937@2018",
-                                     projectId=projectId_str)
-        token = userinfo.getUserToken("hwx535937", "groupE", "hWX535937@2018")
-        domainToken = userinfo.getUserTokenByDomainName("hwx535937", "groupE", "hWX535937@2018")
+
+        userinfo = UserInfo.UserInfo()
+        token = userinfo.getUserToken()
+        domainToken = userinfo.getUserTokenByDomainName()
         ecsclass = EcsClass()
-        ecsPubHeader = ecsclass.getPubHeaderForToken(projectId=projectId_str, token=token)
+        ecsPubHeader = ecsclass.getPubHeaderForToken(projectId=userinfo.northProjectId, token=token)
         getEcsDetailList = ecsclass.getEcsListDetailForNorth(ecsPubHeaderForToken=ecsPubHeader)
         servers = getEcsDetailList["servers"]
         ecslist = []

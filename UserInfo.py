@@ -1,14 +1,41 @@
 #!/usr/bin/python
 
 import requests
+import threading
+
+
+class Singleton(object):
+    _instance_lock = threading.Lock()
+
+    def __init__(self):
+        pass
+
+
+    def __new__(cls, *args, **kwargs):
+        if not hasattr(Singleton, "_instance"):
+            with Singleton._instance_lock:
+                if not hasattr(Singleton, "_instance"):
+                    Singleton._instance = object.__new__(cls)
+        return Singleton._instance
+
+
+class UserSingleton(Singleton):
+    userName = "liuhaiyuan"
+    password = "Haiyuan9047@#"
+    domainName = "hwcloudsom1"
 
 # IAM 统一身份认证 进行用户身份鉴权
-class UserInfo(object):
-    def __init__(self, domainName, userName, password, projectId):
-        self.domainName = domainName
-        self.userName = userName
-        self.password = password
-        self.projectID = projectId
+class UserInfo(Singleton):
+    domainName = "hwx535937"
+    userName = "groupE"
+    password = "hWX535937@2018"
+    northProjectId = "f5e7454905424cd98204e57b8ef66a3c"
+
+    # def __init__(self, domainName, userName, password, projectId):
+    #     self.domainName = domainName
+    #     self.userName = userName
+    #     self.password = password
+    #     self.projectID = projectId
 
     # 获取token的header体
     def getRequestHeader(self):
@@ -28,7 +55,7 @@ class UserInfo(object):
                       }
                     },
                     "scope": {
-                      "project": {"id": self.projectID }
+                      "project": {"id": self.northProjectId }
                     }
                   }
                 }
@@ -53,7 +80,7 @@ class UserInfo(object):
                 }
         return body
 
-    def getUserToken(self, domainName, userName, password):
+    def getUserToken(self):
         reqUrl = "https://iam.cn-north-1.myhuaweicloud.com/v3/auth/tokens"
         header = self.getRequestHeader()
         body = self.getRequestBody()
@@ -68,7 +95,7 @@ class UserInfo(object):
             print(iamReq.status_code)
             return ""
 
-    def getUserTokenByDomainName(self, domainName, userName, password):
+    def getUserTokenByDomainName(self):
         reqUrl = "https://iam.cn-north-1.myhuaweicloud.com/v3/auth/tokens"
         header = self.getRequestHeader()
         body = self.getRequestBodyByDomainName()

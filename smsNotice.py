@@ -34,7 +34,7 @@ def getPhones():
     phones = ['17744469047', '13165750207', '15706017162', '18391250190', "18740706731", "18691575009", "18829597581"]
     # 其他人员，mingda，福寿，芙蓉，亮哥
     #phones = ['18062582937', '15771717728', '13709296375', '13323268512', '17744469047', '13333392837']
-    #phones = ['17744469047']
+    # phones = ['17744469047']
     return phones
 
 def getMessage(ecsLists):
@@ -108,14 +108,13 @@ def getMessage(ecsLists):
     return messageEcs
 
 if __name__ == '__main__':
-    user = UserInfo.UserInfo(domainName="hwx535937", userName="groupE", password="hWX535937@2018",
-                    projectId="f5e7454905424cd98204e57b8ef66a3c")
+    user = UserInfo.UserInfo()
 
-    token = user.getUserToken("hwx535937", "groupE", "hWX535937@2018")
+    token = user.getUserToken()
     phones = getPhones()
     ecsClass = EcsInfo.EcsClass()
     ecsLists = ecsClass.getEcsListData()
     message = getMessage(ecsLists)
 
-    sendMessage(projectId=user.projectID, phones=phones, token=token, message=message )
+    sendMessage(projectId=user.northProjectId, phones=phones, token=token, message=message )
 
