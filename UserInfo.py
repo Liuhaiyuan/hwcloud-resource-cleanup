@@ -30,6 +30,11 @@ class UserInfo(Singleton):
     userName = "groupE"
     password = "hWX535937@2018"
     northProjectId = "f5e7454905424cd98204e57b8ef66a3c"
+    eastProjectId = "3c113ff1ceae45728aab1017eda97404"
+    northeastProjectId = "57ccab022fe140b398c0894285342582"
+    sourthProjectId = "05eff5fc7889491e9272c1316bd7600f"
+    hangKongProjectId = "d25ffdcd5e764c9c8a565b98874c2c2c"
+
 
     # def __init__(self, domainName, userName, password, projectId):
     #     self.domainName = domainName
@@ -42,7 +47,7 @@ class UserInfo(Singleton):
         header = {"Content-Type": "application/json"}
         return header
 
-    def getRequestBody(self):
+    def getRequestBodyByProjectId(self, regionProjectId):
         body = {
                   "auth": {
                     "identity": {
@@ -55,7 +60,7 @@ class UserInfo(Singleton):
                       }
                     },
                     "scope": {
-                      "project": {"id": self.northProjectId }
+                      "project": {"id": regionProjectId }
                     }
                   }
                 }
@@ -80,18 +85,18 @@ class UserInfo(Singleton):
                 }
         return body
 
-    def getUserToken(self):
+    def getUserTokenByProjectId(self, regionProjectId):
         reqUrl = "https://iam.cn-north-1.myhuaweicloud.com/v3/auth/tokens"
         header = self.getRequestHeader()
-        body = self.getRequestBody()
+        body = self.getRequestBodyByProjectId(regionProjectId=regionProjectId)
         iamReq = requests.post(url=reqUrl, headers=header, json=body, )
 
         if iamReq.status_code == 201:
-            print('get iam token success')
+            print('get iam token success by project id')
             token = iamReq.headers["X-Subject-Token"]
             return token
         else:
-            print("get iam token failed")
+            print("get iam token failed by project id")
             print(iamReq.status_code)
             return ""
 

@@ -11,6 +11,11 @@ class EcsClass(object):
         self.ecsCreated = None      # 创建ecs的时间
         self.iamUserId = None       # 操作时的对应user id
         self.iamUserName = None
+        self.cnNorth1EndPoint = "https://ecs.cn-north-1.myhuaweicloud.com"
+        self.cnEast2EndPoint = "https://ecs.cn-east-2.myhuaweicloud.com"
+        self.cnSouth1EndPoint = "https://ecs.cn-south-1.myhuaweicloud.com"
+        self.cnNortheast1EndPoint = "https://ecs.cn-northeast-1.myhuaweicloud.com"
+        self.apSouthEast1EndPoint = "https://ecs.ap-southeast-1.myhwclouds.com"      # hangkang
 
     # 返回ECS API的请求公共header
     def getPubHeaderForToken(self, projectId, token):
@@ -29,6 +34,7 @@ class EcsClass(object):
 
         return getEcsReq
 
+    # 获取华北区ESC详情列表
     def getEcsListDetailForNorth(self, ecsPubHeaderForToken):
         projectId_str = ecsPubHeaderForToken["X-Project-Id"]
         getUrl = "https://ecs.cn-north-1.myhuaweicloud.com/v2/" + projectId_str + "/servers/detail"
@@ -36,33 +42,80 @@ class EcsClass(object):
         servers = getEcsReq.json()
         return servers
 
+    def getEcsListDetailFromRegin(self, ecsPubHeaderForToken, regionEndPoint):
+        projectId_str = ecsPubHeaderForToken["X-Project-Id"]
+        getUrl = regionEndPoint + "/v2/" + projectId_str + "/servers/detail"
+        getEcsReq = requests.get(url=getUrl, headers=ecsPubHeaderForToken)
+        if getEcsReq.status_code == 200:
+            servers = getEcsReq.json()
+            # print(servers)
+            return servers
+        else:
+            print("获取数据失败，返回空值")
+            return []
+
+    def getEcsListDetailFromAllRegin(self):
+        userInfo = UserInfo.UserInfo()
+
+        sourthToken = userInfo.getUserTokenByProjectId(regionProjectId=userInfo.sourthProjectId)
+        sourthPubHeader = self.getPubHeaderForToken(projectId=userInfo.sourthProjectId, token=sourthToken)
+        sourthServers = self.getEcsListDetailFromRegin(ecsPubHeaderForToken=sourthPubHeader, regionEndPoint=self.cnSouth1EndPoint)
+
+        northToken = userInfo.getUserTokenByProjectId(regionProjectId=userInfo.northProjectId)
+        northPubHeader = self.getPubHeaderForToken(projectId=userInfo.northProjectId, token=northToken)
+        northServers = self.getEcsListDetailFromRegin(ecsPubHeaderForToken=northPubHeader, regionEndPoint=self.cnNorth1EndPoint)
+
+        eastToken = userInfo.getUserTokenByProjectId(regionProjectId=userInfo.eastProjectId)
+        eastPubHeader = self.getPubHeaderForToken(projectId=userInfo.eastProjectId, token=eastToken)
+        eastServers = self.getEcsListDetailFromRegin(ecsPubHeaderForToken=eastPubHeader,
+                                                      regionEndPoint=self.cnEast2EndPoint)
+
+        northEastToken = userInfo.getUserTokenByProjectId(regionProjectId=userInfo.northeastProjectId)
+        northEastPubHeader = self.getPubHeaderForToken(projectId=userInfo.northeastProjectId, token=northEastToken)
+        northEastServers = self.getEcsListDetailFromRegin(ecsPubHeaderForToken=northEastPubHeader,
+                                                      regionEndPoint=self.cnNortheast1EndPoint)
+
+        hongKangToken = userInfo.getUserTokenByProjectId(regionProjectId=userInfo.hangKongProjectId)
+        hongKangPubHeader = self.getPubHeaderForToken(projectId=userInfo.hangKongProjectId, token=hongKangToken)
+        hongkangServers = self.getEcsListDetailFromRegin(ecsPubHeaderForToken=hongKangPubHeader,
+                                                          regionEndPoint=self.apSouthEast1EndPoint)
+
+        servers = []
+        servers.append(sourthServers)
+        servers.append(northServers)
+        servers.append(eastServers)
+        servers.append(northEastServers)
+        servers.append(hongkangServers)
+
+        return servers
 
     # 根据详细ECS list 获取列表，根据业务逻辑，获取对应字段的值。
 
     def getEcsListData(self):
 
         userinfo = UserInfo.UserInfo()
-        token = userinfo.getUserToken()
         domainToken = userinfo.getUserTokenByDomainName()
         ecsclass = EcsClass()
-        ecsPubHeader = ecsclass.getPubHeaderForToken(projectId=userinfo.northProjectId, token=token)
-        getEcsDetailList = ecsclass.getEcsListDetailForNorth(ecsPubHeaderForToken=ecsPubHeader)
-        servers = getEcsDetailList["servers"]
+        getEcsDetailList = ecsclass.getEcsListDetailFromAllRegin()
         ecslist = []
-        for server in servers:
-            ecsinfo = EcsClass()
-            ecsinfo.ecsName = server["name"]
-            ecsinfo.ecsCreated = server["created"]
-            ecsinfo.ecsStatus = server["status"]
-            ecsinfo.iamUserId = server["user_id"]
-            ecsinfo.iamUserName = userinfo.selectUserIdForUserName(iamUserId=ecsinfo.iamUserId, token=domainToken)
+        for regionEcsDetailList in getEcsDetailList:
+            servers = regionEcsDetailList["servers"]
+            for server in servers:
+                ecsinfo = EcsClass()
+                ecsinfo.ecsName = server["name"]
+                ecsinfo.ecsCreated = server["created"]
+                ecsinfo.ecsStatus = server["status"]
+                ecsinfo.iamUserId = server["user_id"]
+                ecsinfo.iamUserName = userinfo.selectUserIdForUserName(iamUserId=ecsinfo.iamUserId, token=domainToken)
 
-            ecslist.append(ecsinfo)
+                ecslist.append(ecsinfo)
 
         return ecslist
 
 
-# if __name__ == '__main__':
+if __name__ == '__main__':
+    ecs = EcsClass()
+    ecs.getEcsListDetailFromAllRegin()
 #    projectId_str = 'f5e7454905424cd98204e57b8ef66a3c'
 #    userinfo = UserInfo.UserInfo(domainName="hwx535937", userName="groupE", password="hWX535937@2018",
 #                    projectId=projectId_str)

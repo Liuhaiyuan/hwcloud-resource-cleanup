@@ -44,7 +44,7 @@ def getMessage(ecsLists):
     groupDList = []
     groupEList = []
     groupOthers = []
-    messageEcs = "华为云账号hwx535937，子账号ECS资源情况如下:"
+    messageEcs = "华为云账号hwx535937，全region Ecs资源为:"
     for ecsinfo in ecsLists:
         if ecsinfo.iamUserName == "groupA":
             groupAList.append(ecsinfo)
@@ -60,49 +60,55 @@ def getMessage(ecsLists):
             groupOthers.append(ecsinfo)
 
     if len(groupAList) > 0:
-        message = "用户groupA，当前有ECS资源" + str(len(groupAList)) + "台。"
+        message = "\n用户groupA，有ECS资源" + str(len(groupAList)) + "台,分别是："
         for ecsA in groupAList:
-            message += ecsA.ecsName + "(" + ecsA.ecsCreated + ")"
-            message += " , "
+            # message += ecsA.ecsName + "(" + ecsA.ecsCreated + ")"
+            message += ecsA.ecsName
+            message += ","
         # print(message)
         messageEcs += message
     if len(groupBList) > 0:
-        message = "用户groupB，当前有ECS资源" + str(len(groupBList)) + "台。"
+        message = "\n用户groupB，有ECS资源" + str(len(groupBList)) + "台,分别是："
         for ecsB in groupBList:
-            message += ecsB.ecsName + "(" + ecsB.ecsCreated + ")"
+            # message += ecsB.ecsName + "(" + ecsB.ecsCreated + ")"
+            message += ecsB.ecsName
             message += " , "
         # print(message)
         messageEcs += message
     if len(groupCList) > 0:
-        message = "用户groupC，当前有ECS资源" + str(len(groupCList)) + "台。"
+        message = "\n用户groupC，有ECS资源" + str(len(groupCList)) + "台,分别是："
         for ecsC in groupCList:
-            message += ecsC.ecsName + "(" + ecsC.ecsCreated + ")"
+            # message += ecsC.ecsName + "(" + ecsC.ecsCreated + ")"
+            message += ecsC.ecsName
             message += " , "
         # print(message)
         messageEcs += message
     if len(groupDList) > 0:
-        message = "用户groupD，当前有ECS资源" + str(len(groupDList)) + "台。"
+        message = "\n用户groupD，有ECS资源" + str(len(groupDList)) + "台,分别是："
         for ecsD in groupDList:
-            message += ecsD.ecsName + "(" + ecsD.ecsCreated + ")"
+            # message += ecsD.ecsName + "(" + ecsD.ecsCreated + ")"
+            message += ecsD.ecsName
             message += " , "
         # print(message)
         messageEcs += message
     if len(groupEList) > 0:
-        message = "用户groupE，当前有ECS资源" + str(len(groupEList)) + "台。"
+        message = "\n用户groupE，有ECS资源" + str(len(groupEList)) + "台,分别是："
         for ecsC in groupEList:
-            message += ecsC.ecsName + "(" + ecsC.ecsCreated + ")"
+            # message += ecsC.ecsName + "(" + ecsC.ecsCreated + ")"
+            message += ecsC.ecsName
             message += " , "
         # print(message)
         messageEcs += message
     if len(groupOthers) > 0:
-        message = "其他用户，当前有ECS资源" + str(len(groupOthers)) + "台。"
+        message = "\n其他用户，有ECS资源" + str(len(groupOthers)) + "台,分别是："
         for ecsC in groupOthers:
-            message += ecsC.ecsName + "(" + ecsC.ecsCreated + ")"
+            # message += ecsC.ecsName + "(" + ecsC.ecsCreated + ")"
+            message += ecsC.ecsName
             message += " , "
         # print(message)
         messageEcs += message
 
-    messageEcs += "。请各组长及时清理,避免浪费。"
+    messageEcs += "\n请各组长及时清理,避免浪费。"
     print(messageEcs)
 
     return messageEcs
@@ -110,7 +116,7 @@ def getMessage(ecsLists):
 if __name__ == '__main__':
     user = UserInfo.UserInfo()
 
-    token = user.getUserToken()
+    token = user.getUserTokenByProjectId(user.northProjectId)
     phones = getPhones()
     ecsClass = EcsInfo.EcsClass()
     ecsLists = ecsClass.getEcsListData()
