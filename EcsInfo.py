@@ -3,6 +3,7 @@
 import UserInfo
 import requests
 import json
+from LoggingClass import HwcloudLog
 
 class EcsClass(object):
     def __init__(self):
@@ -24,6 +25,7 @@ class EcsClass(object):
             "X-Project-Id":projectId,
             "X-Auth-Token":token,
         }
+        HwcloudLog().debug("Return ECS API Request Header.")
         return header
 
     # 请求获取ECS List的函数
@@ -48,10 +50,12 @@ class EcsClass(object):
         getEcsReq = requests.get(url=getUrl, headers=ecsPubHeaderForToken)
         if getEcsReq.status_code == 200:
             servers = getEcsReq.json()
-            # print(servers)
+            HwcloudLog().info("get Ecs List Detail from region %s success. " % regionEndPoint)
             return servers
         else:
-            print("获取数据失败，返回空值")
+            HwcloudLog().error("get Ecs List Detail from region %s failure. " % regionEndPoint)
+            HwcloudLog().error("statue.code is %s" % getEcsReq.status_code)
+            HwcloudLog().error("Error Message is : %s" % getEcsReq.text)
             return []
 
     def getEcsListDetailFromAllRegin(self):
@@ -87,6 +91,10 @@ class EcsClass(object):
         servers.append(northEastServers)
         servers.append(hongkangServers)
 
+        HwcloudLog().debug("get ECS List Detial Data From all Region Message is")
+        HwcloudLog().debug(servers)
+        HwcloudLog().info("获取ECS List 详情页面全region信息。")
+
         return servers
 
     # 根据详细ECS list 获取列表，根据业务逻辑，获取对应字段的值。
@@ -113,9 +121,9 @@ class EcsClass(object):
         return ecslist
 
 
-if __name__ == '__main__':
-    ecs = EcsClass()
-    ecs.getEcsListDetailFromAllRegin()
+# if __name__ == '__main__':
+#     ecs = EcsClass()
+#     ecs.getEcsListDetailFromAllRegin()
 #    projectId_str = 'f5e7454905424cd98204e57b8ef66a3c'
 #    userinfo = UserInfo.UserInfo(domainName="hwx535937", userName="groupE", password="hWX535937@2018",
 #                    projectId=projectId_str)

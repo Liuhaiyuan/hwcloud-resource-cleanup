@@ -3,7 +3,7 @@ import EcsInfo
 import UserInfo
 import requests
 import time, json
-
+from LoggingClass import HwcloudLog
 
 # regions_headers = {'Content-Type':'application/json;charset=utf8',"X-Auth-Token":r_tocken}
 # regions_url = "https://iam.cn-north-1.myhwclouds.com/v3/regions"
@@ -22,18 +22,18 @@ def sendMessage(projectId, phones, token, message):
         smsReq = requests.post(url=url, headers=SMN_headers, json=body)
 
         if smsReq.status_code == 200:
-            print("success"),
+            HwcloudLog().info("sms send success to %s" % phone),
             time.sleep(0.1)
 
         else:
-            print("失败")
+            HwcloudLog().error("sms send failure to %s" % phone)
 
 
 def getPhones():
     # 西安业务线人员电话 weibo, dongpan, xudong, liukang,
     phones = ['17744469047', '13165750207', '15706017162', '18391250190', "18740706731", "18691575009", "18829597581"]
     # 其他人员，mingda，福寿，芙蓉，亮哥
-    #phones = ['18062582937', '15771717728', '13709296375', '13323268512', '17744469047', '13333392837']
+    # phones = ['18062582937', '15771717728', '13709296375', '13323268512', '17744469047', '13333392837']
     # phones = ['17744469047']
     return phones
 
@@ -109,7 +109,7 @@ def getMessage(ecsLists):
         messageEcs += message
 
     messageEcs += "\n请各组长及时清理,避免浪费。"
-    print(messageEcs)
+    HwcloudLog().info(messageEcs)
 
     return messageEcs
 

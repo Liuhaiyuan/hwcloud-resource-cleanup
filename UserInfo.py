@@ -2,6 +2,7 @@
 
 import requests
 import threading
+from LoggingClass import HwcloudLog
 
 
 class Singleton(object):
@@ -92,12 +93,14 @@ class UserInfo(Singleton):
         iamReq = requests.post(url=reqUrl, headers=header, json=body, )
 
         if iamReq.status_code == 201:
-            print('get iam token success by project id')
+            HwcloudLog().info("get iam token success by project id.")
             token = iamReq.headers["X-Subject-Token"]
+            HwcloudLog().debug("token values is %s" % token)
             return token
         else:
-            print("get iam token failed by project id")
-            print(iamReq.status_code)
+            HwcloudLog().error("get iam token failed by project id, return none.")
+            HwcloudLog().error(iamReq.status_code)
+            HwcloudLog().error(iamReq.text)
             return ""
 
     def getUserTokenByDomainName(self):
@@ -107,12 +110,14 @@ class UserInfo(Singleton):
         iamReq = requests.post(url=reqUrl, headers=header, json=body, )
 
         if iamReq.status_code == 201:
-            print('get iam domain token success')
+            HwcloudLog().info('get iam domain token success')
             token = iamReq.headers["X-Subject-Token"]
+            HwcloudLog().debug("token values is %s" % token)
             return token
         else:
-            print("get iam domain token failed")
-            print(iamReq.status_code)
+            HwcloudLog().error("get iam domain token failed")
+            HwcloudLog().error(iamReq.status_code)
+            HwcloudLog().error(iamReq.text)
             return ""
 
 
@@ -131,13 +136,4 @@ class UserInfo(Singleton):
             return "ortherUser"       
 	# print(iamReq.json()["user"]["name"])
         #return iamReq.json()["user"]["name"]
-	
-# if __name__ == '__main__':
-#    user = UserInfo(domainName="hwx535937", userName="groupE", password="hWX535937@2018",
-#                    projectId="f5e7454905424cd98204e57b8ef66a3c")
-#
-#    # token = user.getUserToken("hwx535937", "groupE", "hWX535937@2018")
-#    domainToken = user.getUserTokenByDomainName("hwx535937", "groupE", "hWX535937@2018")
-#    user.selectUserIdForUserName('1ac7ef22de6d4258aa2157c10cf895f5', domainToken)
-#
 
