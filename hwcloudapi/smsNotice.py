@@ -1,9 +1,10 @@
 #!/usr/bin/python
-import EcsInfo
-import UserInfo
+
+from hwcloudapi import UserInfo
+from hwcloudapi import EcsInfo
 import requests
 import time, json
-from LoggingClass import HwcloudLog
+from hwcloudapi.LoggingClass import HwcloudLog
 
 # regions_headers = {'Content-Type':'application/json;charset=utf8',"X-Auth-Token":r_tocken}
 # regions_url = "https://iam.cn-north-1.myhwclouds.com/v3/regions"
@@ -31,10 +32,10 @@ def sendMessage(projectId, phones, token, message):
 
 def getPhones():
     # 西安业务线人员电话 weibo, dongpan, xudong, liukang,
-    phones = ['17744469047', '13165750207', '15706017162', '18391250190', "18740706731", "18691575009", "18829597581"]
+    #phones = ['17744469047', '13165750207', '15706017162', '18391250190', "18740706731", "18691575009", "18829597581"]
     # 其他人员，mingda，福寿，芙蓉，亮哥
     # phones = ['18062582937', '15771717728', '13709296375', '13323268512', '17744469047', '13333392837']
-    # phones = ['17744469047']
+    phones = ['17744469047']
     return phones
 
 def getMessage(ecsLists):

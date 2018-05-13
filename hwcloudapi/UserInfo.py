@@ -2,7 +2,7 @@
 
 import requests
 import threading
-from LoggingClass import HwcloudLog
+from hwcloudapi.LoggingClass import HwcloudLog
 
 
 class Singleton(object):

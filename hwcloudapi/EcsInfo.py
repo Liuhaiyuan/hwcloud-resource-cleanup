@@ -1,9 +1,10 @@
 # #!/usr/bin/python
 # _*_ coding:utf-8 _*_
-import UserInfo
+
+from hwcloudapi import UserInfo
 import requests
 import json
-from LoggingClass import HwcloudLog
+from hwcloudapi.LoggingClass import HwcloudLog
 
 class EcsClass(object):
     def __init__(self):
@@ -120,6 +121,27 @@ class EcsClass(object):
 
         return ecslist
 
+
+    def getEcsDataByDjango(self):
+        ecsClassList = self.getEcsListData()
+        ecsNames = list()
+        ecsSatus = list()
+        ecsCreateds = list()
+        ecsUserName = list()
+        for ecsClass in ecsClassList:
+            ecsNames.append(ecsClass.ecsName)
+            ecsSatus.append(ecsClass.ecsStatus)
+            ecsCreateds.append(ecsClass.ecsCreated)
+            ecsUserName.append(ecsClass.iamUserName)
+
+        ecslist_dict = {
+            'ecs_name': ecsNames,
+            'ecs_creates': ecsCreateds,
+            'ecs_status': ecsSatus,
+            'ecs_username':ecsUserName,
+        }
+
+        return ecslist_dict
 
 # if __name__ == '__main__':
 #     ecs = EcsClass()

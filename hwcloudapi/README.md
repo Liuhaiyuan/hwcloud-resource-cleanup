@@ -18,3 +18,6 @@ UserInfo 修改为单例模式
 支持ECSInfo全region资源获取
 修改短信通知模板
 
+# 2018-05-03 commit
+
+项目支持Logging模块，使用Logging模块定义单例，重写单例方法
