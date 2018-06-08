@@ -22,19 +22,19 @@ class Singleton(object):
 
 class UserSingleton(Singleton):
     userName = "liuhaiyuan"
-    password = "Haiyuan9047@#"
+    password = "password"
     domainName = "hwcloudsom1"
 
 # IAM 统一身份认证 进行用户身份鉴权
 class UserInfo(Singleton):
     domainName = "hwx535937"
     userName = "groupE"
-    password = "hWX535937@2018"
-    northProjectId = "f5e7454905424cd98204e57b8ef66a3c"
-    eastProjectId = "3c113ff1ceae45728aab1017eda97404"
-    northeastProjectId = "57ccab022fe140b398c0894285342582"
-    sourthProjectId = "05eff5fc7889491e9272c1316bd7600f"
-    hangKongProjectId = "d25ffdcd5e764c9c8a565b98874c2c2c"
+    password = "password"
+    northProjectId = "f5e7454905424cd9****************"
+    eastProjectId = "3c113ff1ceae45****************"
+    northeastProjectId = "57ccab022fe1****************"
+    sourthProjectId = "05eff5fc7889491****************"
+    hangKongProjectId = "d25ffdcd5e7****************"
 
 
     # def __init__(self, domainName, userName, password, projectId):
